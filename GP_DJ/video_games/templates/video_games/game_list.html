@@ -1,0 +1,55 @@
+{% extends 'video_games/base.html' %}
+{% load static %}
+{% block title %}All Games{% endblock %}
+
+{% block content %}
+
+<h1 class="text-light text-center my-3">All Games</h1>
+
+{% if page_obj.has_other_pages %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    {% for p in paginator.page_range %}
+    {% if page_obj.number == p %}
+    <li class="page-item active" aria-current="page">
+      <span class="page-link">
+        {{ p }}
+        <span class="sr-only"></span>
+      </span>
+    </li>
+    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+    <li>
+        <a class="page-link text-secondary" href="?page={{ p }}">{{ p }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+</nav>
+{% endif %}
+
+<div class="container">
+    <div class="row">
+        {% for game in all_games %}
+        <div class="col-2 py-3">
+            {% if game.poster %}
+            <img src="{{ game.poster.url }}" class="w-100 rounded " >
+            {% endif %}
+        </div>
+        <div class="col-4 py-3 text-start">
+            <a href="{{ game.get_absolute_url }}" class="text-decoration-none float-left">
+                <h2 class="text-light  ">{{ game }}</h2>
+            </a>    
+                <p class="text-secondary">Platform: <a href="{{ game.platform.get_absolute_url }}" class="text-decoration-none text-light">{{ game.platform }}</a></p>
+                <p class="text-secondary">Release Date: {{ game.year }}</p>
+                <br>
+            <img src="{% static 'video_games/img/star.png' %}"  width="20">
+            <p class="text-secondary">{{ game.rating|floatformat:1 }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+
+

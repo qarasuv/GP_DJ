@@ -1,0 +1,90 @@
+{% extends 'video_games/base.html' %}
+{% load static %}
+{% block title %}{{ game.name }}{% endblock %}
+
+
+
+{% block content %}
+
+<h1 class="text-light text-center my-3">{{ game.name }}</h1>
+
+<div class="container">
+    <div class="row my-3 justify-content-between">
+
+        <div class="col-3">
+            <code>Release Date: {{ game.year }}</code>
+            <img src="{{ game.poster.url }}" class="w-100  rounded w">
+            {% if user.is_authenticated %}
+            <form action="{% url 'video_games:add-comment' %}" method="post" class="my-3">
+                {% csrf_token %}
+                <input type="text" name="text" placeholder="add comment">
+                <input type="hidden" name="post_id" value="{{ game.id }}">
+            </form>
+            {% endif %} 
+            <hr style="color: red;">
+            {% if comments_list %}
+                <p class="text-secondary">Comments ({{ comments_list|length }}) </p>
+                {% for comment in comments_list %}
+                <p class="text-light" style="font-size: 80%"> 
+                    <img src="{{ comment.author.addon.ava.url }}" width="30" class="rounded-circle">
+                    <code>{{ comment.author }}</code>
+                    <br>
+                {{ comment }}
+                </p>
+                <p class="text-secondary text-end" style="font-size: 80%">{{ comment.published|timesince }}</p>
+                {% endfor %}
+
+            {%  else %}
+            <p class="text-secondary">no comments</p>    
+            {% endif %} 
+        </div>
+
+        <div class="col-5">
+            <h1 class="text-secondary ">
+                <img src="{% static 'video_games/img/star.png' %}" class="rounded float-end p-2" width="50">    
+                <p class="text-secondary text-end">{{ game.rating|floatformat:1 }} </p>   
+            </h1>                      
+            <h5 class="text-warning">Genre:</h5>          
+            <p class="text-secondary my-3"> 
+                {% for genre in game.genre.all %}
+                    <a href="{{ genre.get_absolute_url }}" class="text-decoration-none text-light">{{ genre }},</a>
+                {% endfor %}
+            </p>
+            <h5 class="text-warning">Platform: </h5>
+            <a href="{{ game.platform.get_absolute_url }}" class="text-decoration-none  "><p class="text-light">{{ game.platform }}</p></a>
+            <h5 class="text-warning">Summary: </h5>
+            <code class="text-light" >{{ game.plot.read.decode }}</code>
+
+
+        </div>
+
+        <div class="col-4">
+            <h1>
+                {% if user.is_authenticated %}
+                {% if game in user.favs.all %}
+                <a href="{% url 'video_games:fav-status' game.id %}" class="text-decoration-none text-warning"><img width="55" src="{% static 'video_games/img/red_heart.png' %}" class="rounded float-start p-2" ></a>
+                {% else %}
+                <a href="{% url 'video_games:fav-status' game.id %}" class="text-decoration-none text-warning"><img width="55" src="{% static 'video_games/img/white_heart.png' %}" class="rounded float-start p-2"></a>
+                {% endif %}
+            {% endif %} 
+            </h1>
+            {% if game.developer.logo %}
+            <img  src="{{ game.developer.logo.url }}" class="rounded float-end w-50">
+            {% endif %}
+            <br> <br> <br>
+            <p class="text-warning ">Developer:</p>
+             <p class="text-secondary">{{ game.developer }}</p>
+            <br> <br>
+            <code class="text-secondary">Views: {{ game.views }}</code>
+            <hr style="height:2px; width:100%; border-width:0; color:red; background-color:red" class="my-3">
+            <h5 class="text-warning text-center my-3">Trailer: </h5>
+            <iframe width="460" height="260" class="border border-warning" src="https://www.youtube.com/embed/{{ game.trailer }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>        
+
+        </div>
+
+    </div>
+</div>
+
+
+
+{% endblock %}

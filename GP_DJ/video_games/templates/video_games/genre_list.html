@@ -1,0 +1,41 @@
+{% extends 'video_games/base.html' %}
+{% load static %}
+{% block title %}All Genres{% endblock %}
+{% block content %}
+
+<h2 class="text-light text-center my-3">Video Game Genres: Everything You Need to Know</h2>
+
+<div class="container">
+    <div class="row my-3 ">
+        <hr style="height:2px; width:100%; border-width:0; color:red; background-color:red" class="my-3">
+            <h6 class="text-secondary mb-3">Although video game genres were once fairly clear cut, that’s simply not the case these days. There’s a growing variety of genres and sub-genres to understand, especially as game developers mix and blend different types of games in new and unexpected ways.
+                That means the video-gaming landscape is constantly evolving. Studios work on tight schedules and follow trends when the opportunity arises. We’re here to help you keep up. In our game genres list, we’ll cover 10 of the most relevant video game categories today.</h6>
+                <hr style="height:2px; width:100%; border-width:0; color:red; background-color:red" class="my-3">
+                <h5 class="text-warning mb-3 text-center">ALL GENRES: </h5>
+                <br><br>
+            {% for genre in genres %}
+            <div class="col-1 my-3">
+            <img src="{{ genre.logo.url }}" width="100" height="100" class="rounded-circle">
+            </div>
+            <div class="col-3 text-start my-3">
+                <p class="text-secondary">
+                    <a href="{{ genre.get_absolute_url }}" class="text-decoration-none text-light">{{ genre.name }} ({{ genre.game.all|length  }})</a>
+                </p>
+            </div>
+            {% endfor %}
+
+        <div class="col-8"></div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

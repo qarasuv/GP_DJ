@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'video_games/img/vg.png' %}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'video_games/css/style.css' %}">
+  </head>
+<body class="bg-dark">
+      <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'video_games:index' %}">
+            <img src="{% static 'video_games/img/vg.png' %} " width="80">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'video_games:game-list' %}">All Games</a>
+              </li>
+
+              <li class="nav-item dropdown">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{% url 'video_games:genre-list' %}">Genre</a>
+                </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'video_games:platform-list' %}">Platform</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'video_games:contact' %}">Feedback</a>
+              </li>
+              
+            </ul>
+            <form action="{% url 'video_games:search' %} " method="post" class="d-flex" role="search">
+              {% csrf_token %}
+              <input class="form-control me-2" type="text" name="match" placeholder="Search" > 
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
+          <div class="mx-5">
+            {% if user.is_authenticated %}
+            <img src="{{ user.addon.ava.url }}" width="50" class="rounded-circle">
+            <a href="#" class="text-decoration-none text-dark">
+                {{ user }}
+            </a>
+            <br>
+            <a href="{% url 'video_games:user-logout' %}" class="text-decoration-none text-dark">log out</a>
+            {% else %}
+            <a href="{% url 'video_games:register' %}" class="text-decoration-none text-dark">Register</a>
+            <a href="{% url 'video_games:login-page' %}" class="text-decoration-none text-dark">Log in</a>
+            {% endif %}
+
+            {% if user.is_staff %}
+            <a href="{% url 'video_games:settings' %}">
+                <img src="{% static 'video_games/img/settings.png' %}" width="20" ></a>
+            {% endif %}
+        </div>
+        </div>
+      </nav>
+      
+{% block content %}{% endblock %}
+</body>
+</html>

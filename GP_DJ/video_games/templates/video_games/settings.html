@@ -1,0 +1,59 @@
+{% extends 'video_games/base.html' %}
+{% load static %}
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+
+
+<h1 class="text-light text-center my-3">
+    <img src="{% static 'video_games/img/settings.png' %}" width="40" >
+    Settings WASD
+</h1>
+
+{% if user.is_staff %}
+<div class="container">
+    <div class="row border border-secondary p-3 justify-content-between">
+        <div class="col-4 text-secondary p-2" >
+            <h2 class="text-warning">Add Games</h2>
+            <form action="{% url 'video_games:add-game' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    {{ gf.as_table }}
+                </table>
+                <input type="submit" value="Add">
+            </form>
+        </div>
+        <div class="col-5 text-secondary p-2" >
+            <h2 class="text-warning">Add Platform</h2>
+            <form action="{% url 'video_games:add-platform' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    {{ pf.as_table }}
+                </table>
+                <input type="submit" value="Add">
+            </form>
+        </div>
+        <div class="col-3 text-secondary p-2" >
+            <h2 class="text-warning">Add Genre</h2>
+            <form action="{% url 'video_games:add-genre' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    {{ gef.as_table }}
+                </table>
+                <input type="submit" value="Add">
+            </form>
+            <br><br><br>
+            <h2 class="text-warning">Add Developer</h2>
+            <form action="{% url 'video_games:add-developer' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    {{ df.as_table }}
+                </table>
+                <input type="submit" value="Add" >
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

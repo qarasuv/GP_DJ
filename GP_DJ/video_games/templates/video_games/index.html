@@ -1,0 +1,51 @@
+{% extends 'video_games/base.html' %}
+{% load static %}
+{% block title %}Best of All Time{% endblock %}
+
+
+
+{% block content %}
+
+<h1 class="text-light text-center my-3">Best Games of All Time</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+            <div class="row my-3 ">
+                {% for game in best_games %}
+                <div class="col-2 py-3">
+                    <img src="{{ game.poster.url }}" class="w-100  rounded ">
+                </div>
+                <div class="col-4 py-3 text-start">
+                    <a href="{{ game.get_absolute_url }}" class="float-left">
+                        <h2 class="text-light  ">{{ game }}</h2>
+                    </a>    
+                        <p class="text-secondary">Platform: <a href="{{ game.platform.get_absolute_url }}" class="text-light">{{ game.platform }}</a></p>
+                        <p class="text-secondary">Release Date: {{ game.year }}</p>
+                        
+                    <img src="{% static 'video_games/img/star.png' %}"  width="20">
+                    <p class="text-secondary">{{ game.rating|floatformat:1 }}</p>
+                </div>
+                {% endfor %}
+            </div>    
+        </div>
+
+        <div class="col-2">
+            <div class="row my-3 ">
+
+            {% if user.is_authenticated and game.fans.all %}
+            <p class="text-secondary my-3"> <code> My wish list:</code></p>  
+            <hr style="height:2px; width:100%; border-width:0; color:red; background-color:red"  >  
+            <div class="row">
+                {% for game in user.favs.all %}
+
+                <code><a href="{{ game.get_absolute_url }}" class="text-light">{{ game.name }}</a></code>
+                {% endfor %}
+            </div>
+            
+            {% endif %}
+            </div>  
+        </div>
+    </div>
+</div>
+
+{% endblock %}

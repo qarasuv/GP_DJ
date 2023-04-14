@@ -1,0 +1,30 @@
+{% extends 'video_games/base.html' %}
+{% load static %}
+{% block title %}All Platforms{% endblock %}
+
+
+
+{% block content %}
+
+<h1 class="text-light text-center my-3">All Platforms</h1>
+<br>
+
+<div class="container">  
+        {% for platform in platforms %}
+            <div class="row my-3 ">
+                <div class="col-2 my-3">
+                <img src="{{ platform.logo.url }}" class="rounded w-100">
+            </div>
+            <div class="col-8 my-3 text-center">
+                <h3 class="text-light">{{ platform }}</h3>
+                <p class="text-secondary">{{ platform.about }}</p>
+                <a href="{{ platform.get_absolute_url  }}" class="text-decoration-none">
+                    <p class="text-end">watch games on this platform</p>
+                </a>
+            </div>
+            </div>    
+        {% endfor %}  
+</div>
+
+
+{% endblock %}

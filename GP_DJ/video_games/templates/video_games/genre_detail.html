@@ -1,0 +1,51 @@
+
+{% extends 'video_games/base.html' %}
+{% load static %}
+{% block title %}{{ genre }}{% endblock %}
+
+
+
+
+{% block content %}
+<h1 class="text-light text-center my-3">Genre: {{ genre }}</h1>
+<div class="container" >
+    <hr style="height:2px; width:100%; border-width:0; color:red; background-color:red" class="my-3">
+    <div class="row my-3 justify-content-between">
+        <div class="col-2 border rounded my-3">
+            {% for genre in genres_all.all %}
+                <a href="{{ genre.get_absolute_url }}" class="text-decoration-none "><p class="text-light">{{ genre }}</p></a>
+                <hr class="text-secondary">
+            {% endfor %}
+        </div> 
+
+        <div class="col-8 my-3">
+
+            <div class="row my-3 text-center">
+        {% for game in genre.game.all %}
+                <div class="col-2 ">
+            <a href="{{ game.get_absolute_url }}" class="text-decoration-none ">
+                <img src="{{ game.poster.url }}" width="100">
+                <p class="text-light">{{ game.name }}</p>
+            </a>                    
+                </div>
+
+
+        {% endfor %}                 
+            </div>
+
+        </div> 
+
+        <div class="col-2 my-3 border rounded my-3 text-center">
+            <br>
+            <img src="{{ genre.logo.url }}" class="w-75">
+            <br>
+            <hr style="color: red;">
+            <p class="text-light"> TOP-3:</p>
+            {% for game in genre.game.all|slice:":3" %}
+                <p class="text-secondary text-start">{{ game.name }}</p>
+            {% endfor %}
+        </div>                         
+    </div>
+</div>
+
+{% endblock %}
